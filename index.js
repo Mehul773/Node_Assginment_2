@@ -1,10 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const fs = require("fs").promises;
 
 const homeRoute = require("./routes/homeRoute");
 const usersRoute = require("./routes/usersRoute");
 const createUserRoute = require("./routes/createUserRoute");
+const addUserRoute = require("./routes/addUserRoute");
 
 const app = express();
 const PORT = 3000;
@@ -28,18 +28,7 @@ app.get("/users", usersRoute);
 app.get("/create", createUserRoute);
 
 // Add route (for adding a user)
-app.post("/add", async (req, res) => {
-  const { userName } = req.body;
-  try {
-    // Append new user to file
-    await fs.appendFile("users.txt", `${userName}\n`);
-    // Redirect to users page
-    res.redirect("/users");
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal Server Error");
-  }
-});
+app.post("/add", addUserRoute);
 
 // Start server
 app.listen(PORT, () => {
